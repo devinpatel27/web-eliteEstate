@@ -53,15 +53,22 @@ export function MobileMenu({ isActive }: { isActive: (href: string) => boolean }
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.8 }}
-        className="container-x space-y-2 py-10 text-sm text-silver"
+        className="container-x space-y-4 py-10 text-sm text-silver"
       >
-        <a href={site.contact.phoneHref} className="block text-bone">
-          {site.contact.phone}
-        </a>
-        <a href={`mailto:${site.contact.email}`} className="block">
-          {site.contact.email}
-        </a>
-        <p className="eyebrow pt-4 text-slate">{site.tagline}</p>
+        {site.contact.advisors.map((a) => (
+          <a key={a.tel} href={a.tel} className="flex items-baseline justify-between gap-4">
+            <span>{a.name}</span>
+            <span className="text-bone">{a.phone}</span>
+          </a>
+        ))}
+        <div className="flex gap-6 pt-2">
+          {site.social.map((s) => (
+            <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="eyebrow text-silver hover:text-bone">
+              {s.label}
+            </a>
+          ))}
+        </div>
+        <p className="eyebrow pt-2 text-slate">{site.tagline}</p>
       </motion.div>
     </motion.div>
   );

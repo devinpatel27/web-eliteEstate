@@ -27,12 +27,18 @@ export function EnquiryCTA({ defaultArea, title }: { defaultArea?: string; title
             <p className="mt-8 max-w-sm text-[0.95rem] leading-relaxed text-silver">
               Share a few details and an advisor will call you — no obligation, no pressure. Prefer to talk now?
             </p>
-            <a
-              href={site.contact.phoneHref}
-              className="mt-6 inline-block font-serif text-3xl font-light transition-opacity hover:opacity-70"
-            >
-              {site.contact.phone}
-            </a>
+            <ul className="mt-8 space-y-5 border-t border-white/12 pt-6">
+              {site.contact.advisors.map((a) => (
+                <li key={a.tel}>
+                  <a href={a.tel} className="group block">
+                    <span className="eyebrow block text-silver">{a.name}</span>
+                    <span className="mt-1 block font-serif text-3xl font-light transition-opacity group-hover:opacity-70">
+                      {a.phone}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
 

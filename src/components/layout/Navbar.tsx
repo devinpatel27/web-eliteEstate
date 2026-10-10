@@ -4,11 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
-import { nav, site } from "@/data/site";
+import { nav } from "@/data/site";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/components/motion/ease";
 import { Logo } from "./Logo";
 import { MobileMenu } from "./MobileMenu";
+
+// The vertical crest sits centred, with navigation split either side of it.
+const leftNav = nav.slice(0, 3);
+const rightNav = nav.slice(3);
 
 export function Navbar() {
   const pathname = usePathname();
@@ -40,6 +44,26 @@ export function Navbar() {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   const solid = scrolled && !open;
 
+  const navLink = (item: (typeof nav)[number]) => (
+    <li key={item.href}>
+      <Link
+        href={item.href}
+        className={cn(
+          "group relative py-2 text-[0.7rem] uppercase tracking-[0.26em] transition-colors duration-500",
+          isActive(item.href) ? "text-bone" : "text-bone/60 hover:text-bone",
+        )}
+      >
+        {item.label}
+        <span
+          className={cn(
+            "absolute -bottom-0.5 left-0 h-px w-full origin-left bg-bone transition-transform duration-600 ease-[var(--ease-luxe)]",
+            isActive(item.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+          )}
+        />
+      </Link>
+    </li>
+  );
+
   return (
     <>
       <motion.header
@@ -51,45 +75,25 @@ export function Navbar() {
         <div
           className={cn(
             "border-b transition-[background-color,border-color,padding] duration-700 ease-[var(--ease-luxe)]",
-            solid ? "border-white/10 bg-ink/95 py-3" : "border-transparent bg-transparent py-5 md:py-7",
+            solid ? "border-white/10 bg-ink/95 py-2.5" : "border-transparent bg-transparent py-4 lg:py-5",
           )}
         >
-          <div className="container-x flex items-center justify-between">
-            <Logo compact={scrolled} />
-
+          <div className="container-x grid grid-cols-[1fr_auto] items-center lg:grid-cols-[1fr_auto_1fr]">
             <nav aria-label="Primary" className="hidden lg:block">
-              <ul className="flex items-center gap-10">
-                {nav.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "group relative py-2 text-[0.7rem] uppercase tracking-[0.26em] transition-colors duration-500",
-                        isActive(item.href) ? "text-bone" : "text-bone/60 hover:text-bone",
-                      )}
-                    >
-                      {item.label}
-                      <span
-                        className={cn(
-                          "absolute -bottom-0.5 left-0 h-px w-full origin-left bg-bone transition-transform duration-600 ease-[var(--ease-luxe)]",
-                          isActive(item.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
-                        )}
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <ul className="flex items-center gap-10">{leftNav.map(navLink)}</ul>
             </nav>
 
-            <div className="flex items-center gap-6">
-              <a
-                href={site.contact.phoneHref}
-                className="hidden text-[0.7rem] tracking-[0.18em] text-bone/70 transition-colors hover:text-bone xl:block"
-              >
-                {site.contact.phone}
-              </a>
+            <Logo
+              priority
+              className={cn(solid ? "h-14 lg:h-[68px]" : "h-[76px] lg:h-[108px]")}
+            />
+
+            <div className="flex items-center justify-end gap-10">
+              <nav aria-label="Secondary" className="hidden lg:block">
+                <ul className="flex items-center gap-10">{rightNav.map(navLink)}</ul>
+              </nav>
               <Link
-                href="/contact"
+                href="/contact#enquiry"
                 className="group relative hidden h-10 items-center overflow-hidden border border-bone/30 px-5 text-[0.68rem] uppercase tracking-[0.24em] text-bone transition-colors duration-500 hover:border-bone hover:text-ink md:inline-flex"
               >
                 <span className="absolute inset-0 origin-bottom scale-y-0 bg-bone transition-transform duration-500 ease-[var(--ease-luxe)] group-hover:scale-y-100" />

@@ -15,24 +15,19 @@ export const metadata = buildMetadata({
 
 export default function ContactPage() {
   const { contact } = site;
-  const office = [{ slug: "sindhu-bhavan-road" as const, name: "Elite Estate", lat: contact.geo.lat, lng: contact.geo.lng }];
-
-  const details = [
-    { label: "Call", value: contact.phone, href: contact.phoneHref },
-    { label: "WhatsApp", value: "Message us", href: contact.whatsapp },
-    { label: "Email", value: contact.email, href: `mailto:${contact.email}` },
-  ];
+  // The office is plotted as a single point; the slug only serves as a stable key.
+  const office = [{ slug: "south-bopal" as const, name: "Elite Estate", lat: contact.geo.lat, lng: contact.geo.lng }];
 
   return (
     <>
       <PageHero
         eyebrow="Contact"
         title={"Let’s talk about\nwhere you’ll live next."}
-        intro="Tell us what you're looking for. An advisor will respond within one working day — or call us directly during office hours."
+        intro="Tell us what you're looking for and an advisor will respond within one working day — or call either of us directly."
         image={images.riverfrontWide}
       />
 
-      <section className="bg-bone py-28 md:py-40">
+      <section id="enquiry" className="scroll-mt-24 bg-bone py-28 md:py-40">
         <div className="container-x grid gap-20 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
             <SectionHeading index="01" eyebrow="Enquiry" title={"Send us a note."} />
@@ -43,32 +38,69 @@ export default function ContactPage() {
 
           <aside className="lg:col-span-4 lg:col-start-9">
             <Reveal delay={0.15} className="lg:sticky lg:top-32">
-              <div className="border-t border-ink/12">
-                {details.map((d) => (
-                  <a
-                    key={d.label}
-                    href={d.href}
-                    target={d.href.startsWith("http") ? "_blank" : undefined}
-                    rel="noreferrer"
-                    className="group flex items-baseline justify-between gap-6 border-b border-ink/12 py-6"
-                  >
-                    <span className="eyebrow text-slate">{d.label}</span>
-                    <span className="font-serif text-xl transition-transform duration-500 ease-[var(--ease-luxe)] group-hover:-translate-x-1.5 sm:text-2xl">
-                      {d.value}
-                    </span>
-                  </a>
+              <p className="eyebrow border-t border-ink/12 pt-5 text-slate">Speak to an advisor</p>
+              <ul className="mt-2">
+                {contact.advisors.map((a) => (
+                  <li key={a.tel} className="border-b border-ink/12 py-6">
+                    <p className="text-sm text-slate">{a.name}</p>
+                    <a
+                      href={a.tel}
+                      className="mt-1 inline-block font-serif text-2xl transition-opacity duration-500 hover:opacity-70 sm:text-[1.75rem]"
+                    >
+                      {a.phone}
+                    </a>
+                    <div className="mt-3 flex gap-5 text-[0.65rem] uppercase tracking-[0.22em]">
+                      <a href={a.tel} className="border-b border-ink/25 pb-0.5 transition-colors hover:border-ink">
+                        Call
+                      </a>
+                      <a
+                        href={a.whatsapp}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="border-b border-ink/25 pb-0.5 transition-colors hover:border-ink"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
+                  </li>
                 ))}
-                <div className="border-b border-ink/12 py-6">
-                  <p className="eyebrow text-slate">Office</p>
-                  <address className="mt-3 text-[0.95rem] not-italic leading-relaxed">
-                    {contact.address.line1}
-                    <br />
-                    {contact.address.line2}
-                    <br />
-                    {contact.address.city}, {contact.address.region} {contact.address.postalCode}
-                  </address>
-                  <p className="mt-3 text-sm text-slate">{contact.hours}</p>
-                </div>
+              </ul>
+
+              <div className="border-b border-ink/12 py-6">
+                <p className="eyebrow text-slate">Office</p>
+                <address className="mt-3 text-[0.95rem] not-italic leading-relaxed">
+                  {contact.address.line1}
+                  <br />
+                  {contact.address.line2}
+                  <br />
+                  {contact.address.locality}, {contact.address.city} &ndash; {contact.address.postalCode}
+                </address>
+                <a
+                  href={contact.mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-block border-b border-ink/25 pb-0.5 text-[0.65rem] uppercase tracking-[0.22em] transition-colors hover:border-ink"
+                >
+                  Get directions
+                </a>
+              </div>
+
+              <div className="py-6">
+                <p className="eyebrow text-slate">Follow</p>
+                <ul className="mt-3 flex gap-6">
+                  {site.social.map((s) => (
+                    <li key={s.href}>
+                      <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-serif text-xl transition-opacity hover:opacity-70"
+                      >
+                        {s.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
           </aside>
@@ -77,10 +109,10 @@ export default function ContactPage() {
 
       <section className="bg-ink py-20 text-bone md:py-28">
         <div className="container-x">
-          <Reveal className="flex items-center justify-between border-t border-white/12 pt-5">
-            <span className="eyebrow text-silver">Find us</span>
+          <Reveal className="flex flex-wrap items-center justify-between gap-4 border-t border-white/12 pt-5">
+            <span className="eyebrow text-silver">Find us &middot; {contact.address.locality}</span>
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${contact.geo.lat},${contact.geo.lng}`}
+              href={contact.mapsUrl}
               target="_blank"
               rel="noreferrer"
               className="eyebrow text-silver transition-colors hover:text-bone"
@@ -89,7 +121,7 @@ export default function ContactPage() {
             </a>
           </Reveal>
           <Reveal className="mt-8 h-[420px] border border-white/12 md:h-[520px]">
-            <AreaMap points={office} focus="sindhu-bhavan-road" />
+            <AreaMap points={office} focus="south-bopal" />
           </Reveal>
         </div>
       </section>

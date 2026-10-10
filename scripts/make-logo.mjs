@@ -12,6 +12,10 @@ const regions = {
   mark: { left: 260, top: 60, width: 470, height: 1260 },
   wordmark: { left: 110, top: 1420, width: 780, height: 420 },
   full: { left: 110, top: 60, width: 780, height: 1790 },
+  // The complete crest as designed: outer frame, key, rule, ELITE / ESTATE.
+  framed: { left: 0, top: 0, width: 992, height: 1888 },
+  // Framed crest plus the TRUST • QUALITY • EXCELLENCE tagline beneath it.
+  crest: { left: 0, top: 0, width: 992, height: 2000 },
 };
 
 const colors = {

@@ -12,7 +12,7 @@ npm run build
 
 | What | File |
 | --- | --- |
-| Phone, email, address, office map pin, socials (**placeholders — replace before launch**) | `src/data/site.ts` |
+| Advisors & phone numbers, office address, map pin, social links | `src/data/site.ts` |
 | The 12 areas: copy, coordinates, featured flag | `src/data/areas.ts` |
 | Values, services, reasons, process, testimonials (sample — replace), stats | `src/data/content.ts` |
 | All photography (currently Unsplash) | `src/data/images.ts` |
@@ -23,11 +23,11 @@ npm run build
 ## Logo
 
 `public/brand/source.webp` is the supplied artwork. `node scripts/make-logo.mjs` regenerates the light/dark
-key mark, wordmark and full lockup plus `src/app/icon.png` / `apple-icon.png`. Swap the source (ideally for an SVG) and re-run.
+key mark, wordmark, full lockup, the framed crest used in the header (`logo-framed-*`) and footer (`logo-crest-*`, with tagline), plus `src/app/icon.png` / `apple-icon.png`. Swap the source (ideally for an SVG) and re-run.
 
 ## Before launch
 
-- Replace every `PLACEHOLDER` in `src/data/site.ts` and set `NEXT_PUBLIC_SITE_URL`.
+- Set `NEXT_PUBLIC_SITE_URL` to the live domain, and refine the approximate office pin (`geo`) in `src/data/site.ts`.
 - Replace sample testimonials and confirm the stats in `src/data/content.ts`.
 - Connect `/api/enquiry` to email or a CRM.
 - Swap Unsplash photos for commissioned photography where possible.

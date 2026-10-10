@@ -2,31 +2,33 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-type Props = { tone?: "light" | "dark"; className?: string; compact?: boolean };
+type Props = {
+  tone?: "light" | "dark";
+  /** "framed": the crest exactly as designed. "crest": framed crest plus tagline. */
+  variant?: "framed" | "crest";
+  className?: string;
+  priority?: boolean;
+};
 
-/** Horizontal lockup: key mark + wordmark, generated from the supplied artwork. */
-export function Logo({ tone = "light", className, compact = false }: Props) {
+const dims = {
+  framed: { width: 991, height: 1888 },
+  crest: { width: 992, height: 2000 },
+};
+
+/** The Elite Estate crest, generated from the supplied artwork (see scripts/make-logo.mjs). Size it with a height class. */
+export function Logo({ tone = "light", variant = "framed", className, priority }: Props) {
   return (
-    <Link href="/" aria-label="Elite Estate, home" className={cn("group flex items-center gap-3.5", className)}>
+    <Link href="/" aria-label="Elite Estate, home" className="group inline-block">
       <Image
-        src={`/brand/logo-mark-${tone}.png`}
-        alt=""
-        width={443}
-        height={1224}
-        priority
-        className={cn(
-          "w-auto transition-all duration-700 ease-[var(--ease-luxe)] group-hover:-translate-y-0.5",
-          compact ? "h-9" : "h-11",
-        )}
-      />
-      <span className={cn("h-7 w-px", tone === "light" ? "bg-bone/25" : "bg-ink/20")} aria-hidden />
-      <Image
-        src={`/brand/logo-wordmark-${tone}.png`}
+        src={`/brand/logo-${variant}-${tone}.png`}
         alt="Elite Estate"
-        width={713}
-        height={367}
-        priority
-        className={cn("w-auto transition-all duration-700 ease-[var(--ease-luxe)]", compact ? "h-7" : "h-8")}
+        width={dims[variant].width}
+        height={dims[variant].height}
+        priority={priority}
+        className={cn(
+          "w-auto transition-[height,opacity] duration-700 ease-[var(--ease-luxe)] group-hover:opacity-85",
+          className,
+        )}
       />
     </Link>
   );

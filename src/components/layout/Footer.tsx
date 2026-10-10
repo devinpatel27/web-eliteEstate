@@ -37,13 +37,12 @@ export function Footer() {
         <div className="grid gap-14 py-20 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-3">
             <Image
-              src="/brand/logo-full-light.png"
-              alt="Elite Estate"
-              width={713}
-              height={1736}
-              className="h-40 w-auto opacity-90"
+              src="/brand/logo-crest-light.png"
+              alt={`Elite Estate, ${site.tagline}`}
+              width={992}
+              height={2000}
+              className="h-56 w-auto opacity-90"
             />
-            <p className="eyebrow mt-8 text-silver">{site.tagline}</p>
           </div>
 
           <div className="lg:col-span-2">
@@ -74,22 +73,30 @@ export function Footer() {
 
           <div className="sm:col-span-2 lg:col-span-3">
             <h2 className="eyebrow mb-6 text-slate">Visit &amp; contact</h2>
-            <address className="space-y-1 text-sm not-italic leading-relaxed text-bone/70">
-              <p>{contact.address.line1}</p>
-              <p>{contact.address.line2}</p>
-              <p>
-                {contact.address.city}, {contact.address.region} {contact.address.postalCode}
-              </p>
-            </address>
-            <div className="mt-6 space-y-1 text-sm">
-              <a href={contact.phoneHref} className="block text-bone transition-opacity hover:opacity-70">
-                {contact.phone}
-              </a>
-              <a href={`mailto:${contact.email}`} className="block text-bone/70 transition-colors hover:text-bone">
-                {contact.email}
-              </a>
-              <p className="pt-2 text-silver">{contact.hours}</p>
-            </div>
+            <a
+              href={contact.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="block transition-colors hover:text-bone"
+            >
+              <address className="space-y-1 text-sm not-italic leading-relaxed text-bone/70">
+                <p>{contact.address.line1}</p>
+                <p>{contact.address.line2}</p>
+                <p>
+                  {contact.address.locality}, {contact.address.city} &ndash; {contact.address.postalCode}
+                </p>
+              </address>
+            </a>
+            <ul className="mt-6 space-y-3 text-sm">
+              {contact.advisors.map((a) => (
+                <li key={a.tel}>
+                  <a href={a.tel} className="group block">
+                    <span className="block text-bone/60">{a.name}</span>
+                    <span className="block text-bone transition-opacity group-hover:opacity-70">{a.phone}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -98,10 +105,10 @@ export function Footer() {
             &copy; {year} {site.legalName}. All rights reserved.
           </p>
           <ul className="flex gap-6">
-            {Object.entries(site.social).map(([name, href]) => (
-              <li key={name}>
-                <a href={href} target="_blank" rel="noreferrer" className="capitalize transition-colors hover:text-bone">
-                  {name}
+            {site.social.map((s) => (
+              <li key={s.href}>
+                <a href={s.href} target="_blank" rel="noreferrer" className="transition-colors hover:text-bone">
+                  {s.label}
                 </a>
               </li>
             ))}

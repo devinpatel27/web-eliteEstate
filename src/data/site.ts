@@ -1,35 +1,54 @@
 // Single source of truth for brand + contact details.
-// TODO(client): replace every value marked PLACEHOLDER with the real details.
+const advisors = [
+  {
+    name: "Dharmendrasinh Sisodiya",
+    phone: "+91 96876 89000",
+    tel: "tel:+919687689000",
+    whatsapp: "https://wa.me/919687689000",
+  },
+  {
+    name: "Brijrajsinh Padheriya",
+    phone: "+91 96876 79001",
+    tel: "tel:+919687679001",
+    whatsapp: "https://wa.me/919687679001",
+  },
+] as const;
+
+const address = {
+  line1: "704, Shaligram Arcade",
+  line2: "Nr. Ambali T Junction, SP Ring Road",
+  locality: "South Bopal",
+  city: "Ahmedabad",
+  region: "Gujarat",
+  postalCode: "380058",
+  country: "IN",
+} as const;
+
 export const site = {
   name: "Elite Estate",
   legalName: "Elite Estate",
   tagline: "Trust • Quality • Excellence",
   description:
     "Elite Estate is an Ahmedabad real estate advisory helping families and investors buy, sell and lease homes across Bopal, Ambli, Thaltej, Bodakdev, Satellite, Shela and SG Highway.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.eliteestate.in", // PLACEHOLDER domain
+  // TODO: set NEXT_PUBLIC_SITE_URL to the live domain before launch.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.eliteestate.in",
   locale: "en_IN",
   contact: {
-    phone: "+91 00000 00000", // PLACEHOLDER
-    phoneHref: "tel:+910000000000", // PLACEHOLDER
-    whatsapp: "https://wa.me/910000000000", // PLACEHOLDER
-    email: "hello@eliteestate.in", // PLACEHOLDER
-    address: {
-      line1: "Office address line", // PLACEHOLDER
-      line2: "Sindhu Bhavan Road, Bodakdev", // PLACEHOLDER
-      city: "Ahmedabad",
-      region: "Gujarat",
-      postalCode: "380054", // PLACEHOLDER
-      country: "IN",
-    },
-    // Office pin for the contact page map. PLACEHOLDER – update to the exact office location.
-    geo: { lat: 23.0419, lng: 72.5006 },
-    hours: "Mon – Sat, 10:00 – 19:00",
+    advisors,
+    /** Primary line used wherever a single number is shown. */
+    primary: advisors[0],
+    address,
+    addressText: `${address.line1}, ${address.line2}, ${address.locality}, ${address.city} - ${address.postalCode}`,
+    mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      `${address.line1}, ${address.line2}, ${address.locality}, ${address.city} ${address.postalCode}`,
+    )}`,
+    // Approximate pin near Ambli T Junction on SP Ring Road – refine to the exact building if needed.
+    geo: { lat: 23.0225, lng: 72.4745 },
   },
-  social: {
-    instagram: "https://instagram.com/", // PLACEHOLDER
-    linkedin: "https://linkedin.com/", // PLACEHOLDER
-    facebook: "https://facebook.com/", // PLACEHOLDER
-  },
+  social: [
+    { label: "Instagram", href: "https://www.instagram.com/eliite__estate" },
+    { label: "Facebook", href: "https://www.facebook.com/share/1C6dv1b41g/?mibextid=wwXIfr" },
+  ],
 } as const;
 
 export const nav = [
